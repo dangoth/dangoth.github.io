@@ -1,4 +1,4 @@
-function addItem() {
+addItem = () => {
     const item = document.getElementById('newItem').value;
     if (!item) {
         alert("Please input an item");
@@ -43,7 +43,6 @@ addNewItem = (item) => {
     row.appendChild(kittenCell);
     row.appendChild(dateCell);
     bodySection.appendChild(row);
-    //markUrgency();
 }
 
 removeSelected = () => {
@@ -104,11 +103,16 @@ markImportant = () => {
         var row = table.rows[index];
         var chk = row.cells[0].childNodes[0];
         if (chk != null && chk.checked) {
-            row.style.color = 'red';
-            row.style.fontWeight = 'bold';
+            if (row.style.color == 'red') {
+                row.style.color = 'black';
+                row.style.fontWeight = 'normal';
+            } else {
+                row.style.color = 'red';
+                row.style.fontWeight = 'bold';
+            }
+            chk.checked = false;
         }
     }
 }
-
 
 
