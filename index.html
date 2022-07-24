@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+            To do list
+        </title>
+        <link rel="stylesheet" href="styles.css">
+        <script src = script.js></script>
+    </head>
+    <body>
+        <div>
+            <div id="inputSection">
+                <label for="x">Enter a new item:</label>
+                <br>
+                <input id="newItem" name="x">
+            </div>
+
+            <div id="buttonSection">
+                <button onclick="addItem()">
+                    Add
+                </button>
+                <button onclick="removeSelected()">
+                    Remove selected
+                </button>
+                <button onclick="markImportant()">
+                    Mark as important
+                </button>
+            </div>
+            <div id="tableSection">
+                <table id="table" class="searchable sortable">
+                    <thead>
+                        <tr>
+                            <th> Select </th>
+                            <th> Todo item </th>
+                            <th> Kitten </th>
+                            <th onclick="sortTable(0)"> Due by: </th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBodyElement">
+                    </tbody>
+                </table>
+            </div>
+    </div>
+    </body>
+</html>

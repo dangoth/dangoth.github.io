@@ -1,0 +1,33 @@
+table,
+thead,
+tbody,
+th,
+tr,
+td {
+    border: 1px solid black;    
+}
+
+#inputSection {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#buttonSection {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#tableSection {
+    border-collapse: collapse;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 8px;
+}
+th {
+    background-color: #8842d5;
+    color: white;
+}
+tr:nth-child(even) {
+    background-color: lightgrey;
+}
