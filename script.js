@@ -95,14 +95,12 @@ sortTable = () => {
         }
         if (shouldSwitch) {
             rows[i].parentNode.insertBefore(rows[i+1], rows[i]);
-            console.log('switching some rows');
             switching = true;
             switchCount++;
         } else {
             if (switchCount == 0 && dir == "asc") {
                 dir = "desc";
                 switching = true;
-                console.log('changing switching direction to descending');
             }
         }
     }
@@ -144,7 +142,6 @@ markImportant = () => {
         }
     }
 }
-
 
 window.onload = function () {
     var storage = localStorage.getItem('localStorage');
