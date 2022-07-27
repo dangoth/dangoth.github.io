@@ -69,7 +69,7 @@ removeSelected = () => {
     localStorage.setItem('localStorage', JSON.stringify(localDataArray));
 }
 
-sortTable = (n) => {
+sortTable = () => {
     var table, rows, switching, i, x, y, shouldSwitch, dir, switchCount = 0;
     table = document.getElementById("table");
     switching = true;
@@ -95,12 +95,14 @@ sortTable = (n) => {
         }
         if (shouldSwitch) {
             rows[i].parentNode.insertBefore(rows[i+1], rows[i]);
+            console.log('switching some rows');
             switching = true;
-            switchcount++;
+            switchCount++;
         } else {
-            if (switchcount == 0 && dir == "asc") {
+            if (switchCount == 0 && dir == "asc") {
                 dir = "desc";
                 switching = true;
+                console.log('changing switching direction to descending');
             }
         }
     }

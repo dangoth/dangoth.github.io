@@ -11,11 +11,26 @@ td {
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 5px;
 }
 #buttonSection {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+input {
+    border-radius: 25px;
+    border: 2px solid blue;
+    padding: 5px;
+    font-size: 20px;
+}
+button {
+    background-color: greenyellow;
+    border: pink;
+    border-width: 10px;
+    border-style: dashed;
+    text-decoration: overline underline;
+    font-size: 16px
 }
 #tableSection {
     border-collapse: collapse;
@@ -30,4 +45,16 @@ th {
 }
 tr:nth-child(even) {
     background-color: lightgrey;
+}
+tr:nth-child(odd) {
+    background-color: white;
+}
+
+img {
+    filter: url('#cherry-icecream') opacity(0.56) saturate(0.8) brightness(1.1) contrast(2);
+}
+
+html {
+    background: url(https://wallpaperaccess.com/full/1434239.jpg) no-repeat center fixed;
+    background-size: cover;
 }
