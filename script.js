@@ -1,3 +1,5 @@
+localDataArray = new Array();
+
 addItem = () => {
     const item = document.getElementById('newItem').value;
     if (!item) {
@@ -43,6 +45,13 @@ addNewItem = (item) => {
     row.appendChild(kittenCell);
     row.appendChild(dateCell);
     bodySection.appendChild(row);
+    localDataArray.push({
+        selectCell:selectCell.innerHTML,
+        itemCell:itemCell.innerHTML,
+        kittenCell:kittenCell.innerHTML,
+        dateCell:dateCell.innerHTML
+    })
+    localStorage.setItem('localStorage', JSON.stringify(localDataArray));
 }
 
 removeSelected = () => {
@@ -52,15 +61,29 @@ removeSelected = () => {
         var row = table.rows[index];
         var chk = row.cells[0].childNodes[0];
         if (chk != null && chk.checked) {
+            console.log('Deleting index ' + index);
             table.deleteRow(index);
+            localDataArray.splice(index-1, 1);
         }
     }
+    localStorage.setItem('localStorage', JSON.stringify(localDataArray));
 }
 
-sortTable = () => {
-    var table, rows, switching, i, x, y, shouldSwitch;
+tableToJson = (table) => {
+    var obj = {};
+    var row, rows = table.rows;
+    for (var i=0, iLen = rows.length; i<iLen; i++) {
+        row = rows[i];
+        obj[row.cells[0].textContent] = row.cells[1].textContent;
+    }
+    return JSON.stringify(obj);
+}
+
+sortTable = (n) => {
+    var table, rows, switching, i, x, y, shouldSwitch, dir, switchCount = 0;
     table = document.getElementById("table");
     switching = true;
+    dir = "asc";
     while (switching) {
         switching = false;
         rows = table.rows;
@@ -68,21 +91,39 @@ sortTable = () => {
             shouldSwitch = false;
             x = rows[i].querySelector('#date-object');
             y = rows[i+1].querySelector('#date-object');
-            if (x.value > y.value) {
-                shouldSwitch = true;
-                break;
+            if (dir == "asc") {
+                if (x.value > y.value) {
+                    shouldSwitch = true;
+                    break;
+                }
+            } else if (dir == "desc") {
+                if (x.value < y.value) {
+                    shouldSwitch = true;
+                    break;
+                }
             }
         }
         if (shouldSwitch) {
             rows[i].parentNode.insertBefore(rows[i+1], rows[i]);
             switching = true;
+            switchcount++;
+        } else {
+            if (switchcount == 0 && dir == "asc") {
+                dir = "desc";
+                switching = true;
+            }
         }
     }
 }
 
+addData = () => {
+    retrieveLocalStorage();
+    localDataArray.push(tableToArray);
+    localStorage.setItem('localData', JSON.stringify(localDataArray));
+}
+
 markUrgency = () => {
     var table = document.getElementById("table");
-    var rows = table.rows;
     var rowCount = table.rows.length;
     var currentDate = new Date();
     for (var i = 1; i < rowCount; i++) {
@@ -111,6 +152,31 @@ markImportant = () => {
                 row.style.fontWeight = 'bold';
             }
             chk.checked = false;
+        }
+    }
+}
+
+
+window.onload = function () {
+    var storage = localStorage.getItem('localStorage');
+    if (storage) {
+        localDataArray = JSON.parse(storage);
+        const bodySection = document.getElementById('tableBodyElement');
+        for (let i = 0; i < localDataArray.length; i++) {
+            const row = document.createElement('tr');
+            const selectCell = document.createElement('td');
+            selectCell.innerHTML = localDataArray[i]['selectCell'];
+            row.appendChild(selectCell);
+            const itemCell = document.createElement('td');
+            itemCell.innerHTML = localDataArray[i]['itemCell'];
+            row.appendChild(itemCell)
+            const kittenCell = document.createElement('td');
+            kittenCell.innerHTML = localDataArray[i]['kittenCell'];
+            row.appendChild(kittenCell)
+            const dateCell = document.createElement('td');
+            dateCell.innerHTML = localDataArray[i]['dateCell'];
+            row.appendChild(dateCell)
+            bodySection.appendChild(row);
         }
     }
 }
