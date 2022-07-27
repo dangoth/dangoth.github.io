@@ -45,11 +45,12 @@ addNewItem = (item) => {
     row.appendChild(kittenCell);
     row.appendChild(dateCell);
     bodySection.appendChild(row);
+
     localDataArray.push({
         selectCell:selectCell.innerHTML,
         itemCell:itemCell.innerHTML,
         kittenCell:kittenCell.innerHTML,
-        dateCell:dateCell.innerHTML
+        dateCellValue:date.value
     })
     localStorage.setItem('localStorage', JSON.stringify(localDataArray));
 }
@@ -61,22 +62,11 @@ removeSelected = () => {
         var row = table.rows[index];
         var chk = row.cells[0].childNodes[0];
         if (chk != null && chk.checked) {
-            console.log('Deleting index ' + index);
             table.deleteRow(index);
             localDataArray.splice(index-1, 1);
         }
     }
     localStorage.setItem('localStorage', JSON.stringify(localDataArray));
-}
-
-tableToJson = (table) => {
-    var obj = {};
-    var row, rows = table.rows;
-    for (var i=0, iLen = rows.length; i<iLen; i++) {
-        row = rows[i];
-        obj[row.cells[0].textContent] = row.cells[1].textContent;
-    }
-    return JSON.stringify(obj);
 }
 
 sortTable = (n) => {
@@ -116,17 +106,12 @@ sortTable = (n) => {
     }
 }
 
-addData = () => {
-    retrieveLocalStorage();
-    localDataArray.push(tableToArray);
-    localStorage.setItem('localData', JSON.stringify(localDataArray));
-}
-
 markUrgency = () => {
-    var table = document.getElementById("table");
+    var table = document.getElementById("tableBodyElement");
+    var rows = table.rows;
     var rowCount = table.rows.length;
     var currentDate = new Date();
-    for (var i = 1; i < rowCount; i++) {
+    for (var i = 0; i < rowCount; i++) {
         date = rows[i].querySelector('#date-object');
         selectedDate = Date.parse(date.value);
         if ((selectedDate - currentDate) / 84600000 < 5) {
@@ -134,7 +119,9 @@ markUrgency = () => {
         } else {
             date.style.color = 'black';
         }
+        localDataArray[i]['dateCellValue'] = date.value;
     }
+    localStorage.setItem('localStorage', JSON.stringify(localDataArray));
 }
 
 markImportant = () => {
@@ -174,9 +161,16 @@ window.onload = function () {
             kittenCell.innerHTML = localDataArray[i]['kittenCell'];
             row.appendChild(kittenCell)
             const dateCell = document.createElement('td');
-            dateCell.innerHTML = localDataArray[i]['dateCell'];
+            const date = document.createElement('input');
+            date.setAttribute('type', 'date');
+            date.setAttribute('class', 'datepicker');
+            date.setAttribute('id', 'date-object');
+            date.value = localDataArray[i]['dateCellValue'];
+            date.addEventListener('change', markUrgency);
+            dateCell.appendChild(date);
             row.appendChild(dateCell)
             bodySection.appendChild(row);
+            markUrgency();
         }
     }
 }
